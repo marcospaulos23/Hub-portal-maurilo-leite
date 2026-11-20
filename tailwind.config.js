@@ -4,13 +4,17 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['"Plus Jakarta Sans"', '"Inter"', "system-ui", "sans-serif"],
+        sans: ['"Inter"', "system-ui", "sans-serif"],
+        display: ['"Manrope"', '"Inter"', "system-ui", "sans-serif"],
       },
       colors: {
-        obsidian: "#08090C",
-        charcoal: "#121417",
-        card: "#101215",
-        consult: "#16181D",
+        obsidian: "#0D1014",
+        charcoal: "#151920",
+        card: "#14181F",
+        consult: "#171C24",
+        offwhite: "#F7F6F2",
+        sage: "#2ED18A",
+        sand: "#E5B96F",
       },
     },
   },

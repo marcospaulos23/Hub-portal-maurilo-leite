@@ -1,6 +1,7 @@
-import { useEffect } from "react";
-import { MessageCircle, Settings2, X } from "lucide-react";
+import { Settings2, X } from "lucide-react";
 import { HUB_CONFIG, type SegmentItem } from "../config/hub";
+import { useOverlayBehavior } from "../lib/useOverlayBehavior";
+import { WhatsAppIcon } from "./WhatsAppIcon";
 
 interface UnconfiguredUrlModalProps {
   segment: SegmentItem | null;
@@ -11,16 +12,7 @@ export function UnconfiguredUrlModal({
   segment,
   onClose,
 }: UnconfiguredUrlModalProps) {
-  useEffect(() => {
-    if (!segment) return;
-
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") onClose();
-    };
-
-    window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
-  }, [segment, onClose]);
+  useOverlayBehavior(Boolean(segment), onClose);
 
   if (!segment) return null;
 
@@ -84,9 +76,9 @@ export function UnconfiguredUrlModal({
             href={HUB_CONFIG.consultation.whatsappUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex min-h-[44px] flex-1 items-center justify-center gap-2 rounded-xl bg-emerald-500 px-4 py-2.5 text-sm font-semibold text-obsidian transition-colors hover:bg-emerald-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-300"
+            className="inline-flex min-h-[44px] flex-1 items-center justify-center gap-2 rounded-xl bg-[#2ED18A] px-4 py-2.5 text-sm font-semibold text-[#0D1014] transition-colors hover:bg-[#42df9a] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2ED18A]"
           >
-            <MessageCircle className="h-4 w-4" />
+            <WhatsAppIcon className="h-4 w-4 shrink-0" />
             <span>Falar no WhatsApp</span>
           </a>
           <button

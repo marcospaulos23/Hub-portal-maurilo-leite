@@ -1,6 +1,8 @@
-import { useEffect } from "react";
-import { ArrowUpRight, Mail, MapPin, MessageCircle, X } from "lucide-react";
+import { ArrowUpRight, Mail, MapPin, X } from "lucide-react";
 import { HUB_CONFIG, type SegmentItem } from "../config/hub";
+import { useOverlayBehavior } from "../lib/useOverlayBehavior";
+import { SegmentLink } from "./SegmentLink";
+import { WhatsAppIcon } from "./WhatsAppIcon";
 
 interface MenuDrawerProps {
   open: boolean;
@@ -13,16 +15,7 @@ export function MenuDrawer({
   onClose,
   onUnconfiguredClick,
 }: MenuDrawerProps) {
-  useEffect(() => {
-    if (!open) return;
-
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") onClose();
-    };
-
-    window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
-  }, [open, onClose]);
+  useOverlayBehavior(open, onClose);
 
   if (!open) return null;
 
@@ -35,7 +28,7 @@ export function MenuDrawer({
       onClick={onClose}
     >
       <div
-        className="flex h-full w-full max-w-sm flex-col justify-between border-l border-white/10 bg-charcoal p-6 shadow-2xl"
+        className="flex h-full w-full max-w-sm flex-col justify-between overflow-y-auto border-l border-white/10 bg-charcoal p-6 shadow-2xl"
         onClick={(event) => event.stopPropagation()}
       >
         <div>
@@ -62,53 +55,25 @@ export function MenuDrawer({
             <p className="px-1 text-xs font-semibold tracking-wider text-zinc-500 uppercase">
               Acessar plataformas
             </p>
-            {HUB_CONFIG.segments.map((segment) => {
-              const itemClasses =
-                "flex min-h-[52px] w-full items-center justify-between rounded-xl border border-white/10 bg-card px-4 py-3 text-left transition-colors hover:border-white/20 hover:bg-white/[0.04] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70";
-
-              if (segment.url) {
-                return (
-                  <a
-                    key={segment.id}
-                    href={segment.url}
-                    onClick={onClose}
-                    className={itemClasses}
-                  >
-                    <div>
-                      <span className="block text-sm font-semibold text-white">
-                        {segment.title}
-                      </span>
-                      <span className="block text-xs text-zinc-400">
-                        {segment.meta}
-                      </span>
-                    </div>
-                    <ArrowUpRight className="h-4 w-4 shrink-0 text-zinc-400" />
-                  </a>
-                );
-              }
-
-              return (
-                <button
-                  key={segment.id}
-                  type="button"
-                  onClick={() => {
-                    onClose();
-                    onUnconfiguredClick(segment);
-                  }}
-                  className={itemClasses}
-                >
-                  <div>
-                    <span className="block text-sm font-semibold text-white">
-                      {segment.title}
-                    </span>
-                    <span className="block text-xs text-zinc-400">
-                      {segment.meta}
-                    </span>
-                  </div>
-                  <ArrowUpRight className="h-4 w-4 shrink-0 text-zinc-400" />
-                </button>
-              );
-            })}
+            {HUB_CONFIG.segments.map((segment) => (
+              <SegmentLink
+                key={segment.id}
+                segment={segment}
+                onNavigate={onClose}
+                onUnconfiguredClick={onUnconfiguredClick}
+                className="flex min-h-[52px] w-full items-center justify-between rounded-xl border border-white/10 bg-card px-4 py-3 text-left transition-colors hover:border-white/20 hover:bg-white/[0.04] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
+              >
+                <div>
+                  <span className="block text-sm font-semibold text-white">
+                    {segment.title}
+                  </span>
+                  <span className="block text-xs text-zinc-400">
+                    {segment.meta}
+                  </span>
+                </div>
+                <ArrowUpRight className="h-4 w-4 shrink-0 text-zinc-400" />
+              </SegmentLink>
+            ))}
           </nav>
 
           <div className="mt-8 space-y-3">
@@ -119,10 +84,12 @@ export function MenuDrawer({
               href={HUB_CONFIG.consultation.whatsappUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex min-h-[48px] items-center gap-3 rounded-xl bg-emerald-500/15 px-4 py-3 text-sm font-semibold text-emerald-300 border border-emerald-400/25 transition-colors hover:bg-emerald-500/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400"
+              className="flex min-h-[48px] items-center gap-3 rounded-xl border border-[#2ED18A]/45 bg-[#2ED18A]/15 px-4 py-3 text-sm font-semibold text-[#7BF1BA] transition-colors hover:bg-[#2ED18A]/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2ED18A]"
             >
-              <MessageCircle className="h-4 w-4 shrink-0" />
-              <span>WhatsApp: {HUB_CONFIG.consultation.whatsappNumberDisplay}</span>
+              <WhatsAppIcon className="h-4 w-4 shrink-0" />
+              <span>
+                WhatsApp: {HUB_CONFIG.consultation.whatsappNumberDisplay}
+              </span>
             </a>
             <a
               href={`mailto:${HUB_CONFIG.consultation.email}`}
@@ -138,7 +105,7 @@ export function MenuDrawer({
           </div>
         </div>
 
-        <div className="border-t border-white/10 pt-5">
+        <div className="mt-6 border-t border-white/10 pt-5">
           <p className="mb-2.5 text-xs font-semibold tracking-wider text-zinc-500 uppercase">
             Redes sociais
           </p>

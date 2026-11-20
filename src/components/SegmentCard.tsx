@@ -1,5 +1,6 @@
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 import type { SegmentItem } from "../config/hub";
+import { SegmentLink } from "./SegmentLink";
 
 interface SegmentCardProps {
   segment: SegmentItem;
@@ -8,17 +9,40 @@ interface SegmentCardProps {
 
 const ACCENT_STYLES: Record<
   SegmentItem["accent"],
-  { badge: string; hoverBorder: string; ctaText: string }
+  {
+    dot: string;
+    badgeBorder: string;
+    hoverBorder: string;
+    hoverShadow: string;
+    chipStyle: string;
+    ctaBox: string;
+    ctaText: string;
+    cornerIcon: string;
+  }
 > = {
   blue: {
-    badge: "bg-sky-500/15 text-sky-300 border-sky-400/25",
-    hoverBorder: "hover:border-sky-400/35",
-    ctaText: "group-hover:text-sky-300",
+    dot: "bg-[#E5B96F] shadow-[0_0_8px_rgba(229,185,111,0.8)]",
+    badgeBorder: "border-[#E5B96F]/45 bg-[#0D1014]/80 text-[#F7F6F2]",
+    hoverBorder: "hover:border-[#E5B96F]/70",
+    hoverShadow: "hover:shadow-[0_24px_60px_-18px_rgba(229,185,111,0.28)]",
+    chipStyle: "border-[#E5B96F]/35 bg-[#E5B96F]/15 text-[#F5D79E]",
+    ctaBox:
+      "border-[#E5B96F]/40 bg-[#E5B96F]/15 text-[#F7F6F2] group-hover:border-[#E5B96F] group-hover:bg-[#E5B96F] group-hover:text-[#0D1014]",
+    ctaText: "group-hover:text-[#0D1014]",
+    cornerIcon:
+      "border-[#E5B96F]/45 text-[#F5D79E] group-hover:border-[#E5B96F] group-hover:bg-[#E5B96F] group-hover:text-[#0D1014]",
   },
   emerald: {
-    badge: "bg-emerald-500/15 text-emerald-300 border-emerald-400/25",
-    hoverBorder: "hover:border-emerald-400/35",
-    ctaText: "group-hover:text-emerald-300",
+    dot: "bg-[#2ED18A] shadow-[0_0_8px_rgba(46,209,138,0.8)]",
+    badgeBorder: "border-[#2ED18A]/45 bg-[#0D1014]/80 text-[#F7F6F2]",
+    hoverBorder: "hover:border-[#2ED18A]/70",
+    hoverShadow: "hover:shadow-[0_24px_60px_-18px_rgba(46,209,138,0.28)]",
+    chipStyle: "border-[#2ED18A]/35 bg-[#2ED18A]/15 text-[#7BF1BA]",
+    ctaBox:
+      "border-[#2ED18A]/40 bg-[#2ED18A]/15 text-[#F7F6F2] group-hover:border-[#2ED18A] group-hover:bg-[#2ED18A] group-hover:text-[#0D1014]",
+    ctaText: "group-hover:text-[#0D1014]",
+    cornerIcon:
+      "border-[#2ED18A]/45 text-[#7BF1BA] group-hover:border-[#2ED18A] group-hover:bg-[#2ED18A] group-hover:text-[#0D1014]",
   },
 };
 
@@ -28,77 +52,92 @@ export function SegmentCard({
 }: SegmentCardProps) {
   const styles = ACCENT_STYLES[segment.accent];
 
-  const cardInner = (
-    <article
-      className={`group flex h-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-card transition-all duration-300 motion-reduce:transition-none ${styles.hoverBorder} hover:-translate-y-0.5 hover:shadow-2xl hover:shadow-black/60 motion-reduce:hover:translate-y-0`}
+  return (
+    <SegmentLink
+      segment={segment}
+      onUnconfiguredClick={onUnconfiguredClick}
+      className="group block w-full rounded-[20px] text-left transition-transform duration-300 ease-out hover:-translate-y-1 motion-reduce:transition-none motion-reduce:hover:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0D1014]"
     >
-      <div className="relative aspect-[16/10] w-full overflow-hidden bg-zinc-900">
-        <img
-          src={segment.imageSrc}
-          alt={segment.imageAlt}
-          loading="eager"
-          className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
-        />
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-card via-card/40 to-transparent"
-        />
-      </div>
+      <article
+        className={`relative flex h-full flex-col overflow-hidden rounded-[20px] border border-white/[0.1] bg-[#14181F] shadow-[0_20px_50px_-20px_rgba(0,0,0,0.85),inset_0_1px_0_0_rgba(255,255,255,0.07)] transition-[border-color,box-shadow] duration-300 motion-reduce:transition-none ${styles.hoverBorder} ${styles.hoverShadow}`}
+      >
+        <div className="relative isolate aspect-[16/10] w-full overflow-hidden rounded-t-[19px] bg-[#14181F] [transform:translateZ(0)]">
+          <img
+            src={segment.imageSrc}
+            alt={segment.imageAlt}
+            loading="eager"
+            className="block h-full w-full object-cover transition-transform duration-500 ease-out will-change-transform [backface-visibility:hidden] group-hover:scale-[1.035] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
+          />
 
-      <div className="flex flex-1 flex-col justify-between p-6 sm:p-7">
-        <div>
-          <span
-            className={`inline-flex items-center rounded-full border px-3 py-1 text-[11px] font-semibold tracking-wider uppercase ${styles.badge}`}
-          >
-            {segment.badge}
-          </span>
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute -inset-x-px -bottom-px top-0 bg-gradient-to-t from-[#14181F] from-5% via-[#14181F]/30 via-35% to-black/25"
+          />
 
-          <h3 className="mt-4 text-2xl font-bold tracking-tight text-white sm:text-[26px]">
-            {segment.title}
-          </h3>
-
-          <p className="mt-2.5 text-[15px] leading-relaxed text-zinc-400">
-            {segment.description}
-          </p>
-        </div>
-
-        <div className="mt-6 border-t border-white/[0.07] pt-5">
-          <p className="mb-3 text-xs font-medium tracking-wide text-zinc-500">
-            {segment.meta}
-          </p>
-
-          <div className="flex items-center justify-between text-base font-semibold text-white">
-            <span className={`transition-colors ${styles.ctaText}`}>
-              {segment.ctaLabel}
+          <div className="absolute inset-x-4 top-4 flex items-center justify-between gap-3">
+            <span
+              className={`inline-flex items-center gap-2 rounded-full border px-3 py-1 text-[11px] font-semibold tracking-[0.14em] uppercase backdrop-blur-md ${styles.badgeBorder}`}
+            >
+              <span
+                className={`h-2 w-2 rounded-full ${styles.dot}`}
+                aria-hidden="true"
+              />
+              {segment.badge}
             </span>
-            <ArrowRight
+
+            <span
               aria-hidden="true"
-              className={`h-5 w-5 text-zinc-300 transition-transform duration-300 group-hover:translate-x-1 motion-reduce:transition-none motion-reduce:group-hover:translate-x-0 ${styles.ctaText}`}
-            />
+              className={`flex h-9 w-9 items-center justify-center rounded-full border bg-[#0D1014]/75 backdrop-blur-md transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 motion-reduce:transition-none motion-reduce:group-hover:translate-x-0 motion-reduce:group-hover:translate-y-0 ${styles.cornerIcon}`}
+            >
+              <ArrowUpRight className="h-4 w-4" />
+            </span>
           </div>
         </div>
-      </div>
-    </article>
-  );
 
-  const sharedClasses =
-    "block w-full text-left rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:ring-offset-2 focus-visible:ring-offset-obsidian";
+        <div className="relative z-10 -mt-px flex flex-1 flex-col justify-between bg-[#14181F] p-6 sm:p-7">
+          <div>
+            <h3 className="font-display text-2xl font-bold tracking-tight text-[#F7F6F2] sm:text-[28px]">
+              {segment.title}
+            </h3>
 
-  if (segment.url) {
-    return (
-      <a href={segment.url} className={sharedClasses}>
-        {cardInner}
-      </a>
-    );
-  }
+            <p className="mt-2.5 text-[15px] leading-relaxed text-[#F7F6F2]/75">
+              {segment.description}
+            </p>
 
-  return (
-    <button
-      type="button"
-      onClick={() => onUnconfiguredClick(segment)}
-      className={sharedClasses}
-    >
-      {cardInner}
-    </button>
+            <ul
+              aria-label={`Destaques de ${segment.title}`}
+              className="mt-4 flex flex-wrap gap-2"
+            >
+              {segment.highlights.map((item) => (
+                <li
+                  key={item}
+                  className={`rounded-lg border px-2.5 py-1 text-xs font-medium ${styles.chipStyle}`}
+                >
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="mt-6 border-t border-white/[0.08] pt-5">
+            <p className="mb-3.5 text-xs font-medium tracking-wide text-[#F7F6F2]/60">
+              {segment.meta}
+            </p>
+
+            <div
+              className={`flex min-h-[46px] items-center justify-between rounded-xl border px-4 py-2.5 text-sm font-semibold transition-colors duration-300 ${styles.ctaBox}`}
+            >
+              <span className={`transition-colors ${styles.ctaText}`}>
+                {segment.ctaLabel}
+              </span>
+              <ArrowRight
+                aria-hidden="true"
+                className={`h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 motion-reduce:transition-none motion-reduce:group-hover:translate-x-0 ${styles.ctaText}`}
+              />
+            </div>
+          </div>
+        </div>
+      </article>
+    </SegmentLink>
   );
 }
