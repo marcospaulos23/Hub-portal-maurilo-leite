@@ -1,5 +1,8 @@
 # Changelog
 
+## 19/11/2026 — 23:16
+- **Menu lateral mobile (`src/components/MenuDrawer.tsx`):** adicionada a logo no topo (`BrandMark`), cards coloridos com ícones para **Imóveis** (`#E5B96F`) e **Energia Solar** (`#2ED18A`), botão de WhatsApp vibrante com contraste escuro e blocos estilizados para e-mail, localização e redes sociais.
+
 ## 19/11/2026 — 23:05
 - **Animação nas rotas do menu (`src/App.tsx`):** removido o fundo em caixa ao passar o cursor sobre `Imóveis`, `Energia Solar` e `Atendimento`, aplicando animação suave de elevação, destaque de cor e linha inferior expansível.
 
